@@ -1,2 +1,4 @@
 amrex/.*
 amrex/__pycache__
+amrex/*.mp4
+amrex/*.png
