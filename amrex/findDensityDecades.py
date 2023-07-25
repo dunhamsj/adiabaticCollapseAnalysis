@@ -2,36 +2,43 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+plt.style.use( 'publication.sty' )
 
-from UtilitiesModule import GetFileArray
-from MakeDataFile import MakeDataFile, ReadHeader
+from MakeDataFile import MakeDataFile
 
 def findDensityDecades():
+
+    useEvery = 10
 
     ID = 'AdiabaticCollapse_XCFC'
 
     plotfileDirectory \
-      = '/Users/dunhamsj/Work/Codes/thornado/SandBox/AMReX/Applications/' \
-        + '{:}/{:}_000-479.2ms/'.format( ID, ID )
+      = '/home/kkadoogan/Work/adiabaticCollapseAnalysis/amrex/' \
+        + '{:}_000-479.2ms/'.format( ID )
 
     plotfileBaseName = ID + '.plt'
 
-    datafileDirectory = '.{:}/'.format( ID )
+    dataDirectory = '.{:}/'.format( ID )
 
-    plotfileArray = GetFileArray( plotfileDirectory, plotfileBaseName )
+    SSi = -1
+    SSf = -1
+    nSS = -1
 
-    for iSS in range( plotfileArray.shape[0] ):
-        plotfileArray[iSS] = plotfileArray[iSS][-8:]
+    Field = 'PF_D'
+    yLabel = r'$\rho\,\left[\mathrm{g\,cm}^{-3}\right]$'
 
-    SSi = 0
-    SSf = plotfileArray.shape[0] - 1
-    nSS = plotfileArray.shape[0]
+    plotfileArray \
+      = MakeDataFile( Field, plotfileDirectory, dataDirectory, \
+                      plotfileBaseName, 'spherical', \
+                      SSi = SSi, SSf = SSf, nSS = nSS, \
+                      UsePhysicalUnits = True, \
+                      MaxLevel = -1, Verbose = True )
 
-    MakeDataFile( 'PF_D', plotfileDirectory, datafileDirectory, \
-                  plotfileBaseName, 'spherical', \
-                  SSi = SSi, SSf = SSf, nSS = nSS, \
-                  UsePhysicalUnits = True, \
-                  MaxLevel = -1, Verbose = True )
+    if SSi == -1: SSi = 0
+    if SSf == -1: SSf = plotfileArray.shape[0]-1
+    if nSS == -1: nSS = plotfileArray.shape[0]
+
+    nSS = nSS // useEvery
 
     densityDecades = np.logspace( 10, 14, 5 )
     nDecades = densityDecades.shape[0]
@@ -42,57 +49,68 @@ def findDensityDecades():
     ind = np.empty( (nDecades), np.int64   )
     t   = np.empty( (nDecades), np.float64 )
 
+    SS = np.linspace( SSi, SSf, nSS, dtype = np.int64 )
+
     density    = 0.0
     MaxDensity = 0.0
     tMax       = 0.0
     indMax     = 0
 
-    i = 0
+    fig, ax = plt.subplots( 1, 1 )
+
     for iSS in range( nSS ):
 
-        i += 1
+        if iSS % useEvery == 0:
+          print( '  {:}/{:}'.format( iSS, nSS ) )
 
-        iSS = SSi + np.int64( ( SSf - SSi  ) / ( nSS - 1 ) * iSS )
+        fileDirectory = dataDirectory + plotfileArray[SS[iSS]] + '/'
 
-        if i % 100 == 0:
-          print( '  {:}/{:}'.format( i, nSS ) )
+        timeFile = fileDirectory + '{:}.dat'.format( 'Time' )
+        dataFile = fileDirectory + '{:}.dat'.format( Field  )
 
-        timefile = datafileDirectory + plotfileArray[iSS] + '/Time.dat'
-        datafile = datafileDirectory + plotfileArray[iSS] + '/PF_D.dat'
+        data = np.loadtxt( dataFile )
+        time = np.loadtxt( timeFile )
 
-        dataShape, dataUnits, minVal, maxVal \
-          = ReadHeader( datafile )
-
-        data = np.loadtxt( datafile ).reshape( np.int64( dataShape ) )
-        time = np.loadtxt( timefile )
         density = data[0]
 
         if density > MaxDensity:
 
             MaxDensity = density
             tMax       = time
-            indMax     = iSS
+            indMax     = SS[iSS]
 
         for iDec in range( nDecades ):
 
             if density > densityDecades[iDec] and not foundDecade[iDec]:
 
+                X1File = fileDirectory + '{:}.dat'.format( 'X1'   )
+                X1_C   = np.loadtxt( X1File   )
+
                 foundDecade[iDec] = True
-                ind        [iDec] = iSS
+                ind        [iDec] = SS[iSS]
                 t          [iDec] = time
+
+                ax.plot( X1_C, data )
+
+    ax.grid( which = 'both' )
+
+    ax.set_xscale( 'log' )
+    ax.set_yscale( 'log' )
+
+    ax.set_xlabel( r'$r\,\left[\mathrm{km}\right]$' )
+    ax.set_ylabel( yLabel )
+
+    plt.show()
+    plt.close()
 
     print( ind )
     print( 'MaxDensity: {:.3e} g/cm^3'.format( MaxDensity ) )
     print( '      tMax: {:.3e} ms'.format( tMax ) )
     print( '    indMax: {:d}'.format( indMax ) )
 
-    MaxDensity = MaxDensity
-    tMax       = tMax
-    indMax     = indMax
+if __name__ == '__main__':
 
-#if __name__ == '__main__':
+    findDensityDecades()
 
-findDensityDecades()
-
-import os
-os.system( 'rm -rf __pycache__' )
+    import os
+    os.system( 'rm -rf __pycache__' )
