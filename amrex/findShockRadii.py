@@ -15,10 +15,13 @@ def findShockRadii():
     indBounce = 2503
 
     ID = 'AdiabaticCollapse_XCFC'
+    idSuffix = '_old'
 
     plotfileDirectory \
-      = '/home/kkadoogan/Work/adiabaticCollapseAnalysis/amrex/' \
-          + '{:}_000-479.2ms/'.format( ID )
+      = '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
+        + '{:}/{:}/'.format( ID, ID + idSuffix )
+
+    ID += idSuffix
 
     plotfileBaseName = ID + '.plt'
 

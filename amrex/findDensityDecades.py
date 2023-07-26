@@ -8,13 +8,16 @@ from MakeDataFile import MakeDataFile
 
 def findDensityDecades():
 
-    useEvery = 10
+    useEvery = 1
 
-    ID = 'AdiabaticCollapse_XCFC'
+    ID = 'AdiabaticCollapse_XCFC_old'
+    idSuffix = '_old'
 
     plotfileDirectory \
-      = '/home/kkadoogan/Work/adiabaticCollapseAnalysis/amrex/' \
-        + '{:}_000-479.2ms/'.format( ID )
+      = '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
+        + '{:}/{:}/'.format( ID, ID + idSuffix )
+
+    ID += idSuffix
 
     plotfileBaseName = ID + '.plt'
 
@@ -43,7 +46,7 @@ def findDensityDecades():
     densityDecades = np.logspace( 10, 14, 5 )
     nDecades = densityDecades.shape[0]
 
-    foundDecade = [ False for iDec in range( nDecades ) ]
+    foundDecade = [ False for iDecade in range( nDecades ) ]
     foundDecade = np.array( foundDecade, bool )
 
     ind = np.empty( (nDecades), np.int64   )
@@ -79,16 +82,16 @@ def findDensityDecades():
             tMax       = time
             indMax     = SS[iSS]
 
-        for iDec in range( nDecades ):
+        for iDecade in range( nDecades ):
 
-            if density > densityDecades[iDec] and not foundDecade[iDec]:
+            if density > densityDecades[iDecade] and not foundDecade[iDecade]:
 
                 X1File = fileDirectory + '{:}.dat'.format( 'X1'   )
                 X1_C   = np.loadtxt( X1File   )
 
-                foundDecade[iDec] = True
-                ind        [iDec] = SS[iSS]
-                t          [iDec] = time
+                foundDecade[iDecade] = True
+                ind        [iDecade] = SS[iSS]
+                t          [iDecade] = time
 
                 ax.plot( X1_C, data )
 
