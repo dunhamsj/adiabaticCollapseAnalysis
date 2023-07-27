@@ -12,13 +12,12 @@ from UtilitiesModule import GetData, GetNorm
 # Specify name of problem
 problemName = 'AdiabaticCollapse_XCFC'
 
-# Specify title of figure
-figTitle = problemName
+HOME = '/home/kkadoogan/'
 
 # Specify directory containing plotfiles
 plotfileDirectory \
-  = [ '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
-      + '{:}/'.format( problemName ) ]
+  = [ HOME + 'Work/Codes/thornado/SandBox/AMReX/Applications/' \
+        + 'AdiabaticCollapse_XCFC/' ]
 label \
   = [ 'lab' ]
 
@@ -36,13 +35,11 @@ maxLevel = -1
 
 verbose = True
 
-saveFig = False
+saveFig = True
 
 #### ====== End of User Input =======
 
 nRuns = len( plotfileDirectory )
-
-FigName = 'fig.{:}_{:}.png'.format( problemName, field )
 
 # Append "/" to plotfileDirectory, if not present
 for i in range( nRuns ):
@@ -90,7 +87,9 @@ for xx in xRef:
 
 if saveFig:
 
-    plt.saveFig( FigName, dpi = 300 )
+    figName = HOME + 'fig.{:}_{:}.png'.format( problemName, field )
+    plt.savefig( figName, dpi = 300 )
+    print( '\n  Saved {:}'.format( figName ) )
 
 else:
 
