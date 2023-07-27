@@ -29,7 +29,7 @@ field = 'AF_T'
 yLabel = r'$T\,\left[\mathrm{K}\right]$'
 
 # Specify to plot in log-scale
-useLogYScale = True
+useLogScale_Y = True
 
 maxLevel = -1
 
@@ -75,7 +75,9 @@ for i in range( nRuns ):
 
 #ax.legend()
 
-if( useLogYScale ): ax.set_yscale( 'log' )
+ax.grid( which = 'both' )
+
+if( useLogScale_Y ): ax.set_yscale( 'log' )
 ax.set_xscale( 'log' )
 
 ax.set_xlabel( r'$r\,\left[\mathrm{km}\right]$' )
