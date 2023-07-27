@@ -693,6 +693,7 @@ def GetData( DataDirectory, PlotFileBaseName, Field, \
     else:
 
         return Data, DataUnits
+# END GetData
 
 
 def GetNorm( UseLogScale, Data, vmin = +1.0e100, vmax = -1.0e100 ):
