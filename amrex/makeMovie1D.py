@@ -104,7 +104,7 @@ xH = X1_C0[-1] + 0.5 * dX10[-1]
 
 if nSS < 0: nSS = plotfileArray.shape[0]
 
-fig, ax = plt.figure( 1, 1 )
+fig, ax = plt.subplots( 1, 1 )
 ax.set_title( r'$\texttt{{{:}}}$'.format( ID ), fontsize = 15 )
 
 if not useCustomLimits:
