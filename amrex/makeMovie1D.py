@@ -19,6 +19,8 @@ Usage:
 
 #### ========== User Input ==========
 
+tb = 2.503e2
+
 # ID to be used for naming purposes
 ID = 'AdiabaticCollapse_XCFC'
 
@@ -60,6 +62,9 @@ verbose = True
 useCustomLimits = False
 ymin = 0.0
 ymax = 2.0
+
+useCustomTicks_Y = False
+yticks = np.logspace( 5, 15, 11 )
 
 movRunTime = 10.0 # seconds
 
@@ -130,7 +135,7 @@ time_text = ax.text( 0.1, 0.9, '', transform = ax.transAxes, fontsize = 13 )
 ax.set_xlabel( r'$r\ \left[\mathrm{km}\right]$', fontsize = 15 )
 ax.set_ylabel( yLabel )
 
-ax.set_xlim( xL + 0.25 * dX10[0], xH )
+ax.set_xlim( xL + 0.25 * dX10[0], 1.0e4 )
 ax.set_ylim( ymin, ymax )
 
 ax.grid( which = 'both' )
@@ -161,8 +166,8 @@ def UpdateFrame( t ):
     print('    {:}/{:}'.format( t, nSS ) )
     data, dataUnits, X1_C, dX1, time = f(t)
 
-    time_text.set_text( r'$t={:.3e}\ \left[\mathrm{{ms}}\right]$' \
-                        .format( time ) )
+    time_text.set_text( r'$t-t_{{b}}={:.3e}\ \left[\mathrm{{ms}}\right]$' \
+                        .format( time - tb ) )
 
     line             .set_data( X1_C , data .flatten() )
     if showIC:   IC  .set_data( X1_C0, data0.flatten() )
@@ -175,11 +180,15 @@ def UpdateFrame( t ):
 
     return ret
 
-ax.legend( prop = {'size':12} )
+if showIC or plotMesh:
+    ax.legend( prop = {'size':12} )
 
 xRef = [ 4.0e3, 2.0e3, 1.0e3, 5.0e2, 1.0e2, 5.0e1 ]
 for xx in xRef:
     ax.axvline( xx, color = 'b', alpha = 0.3 )
+
+if useCustomTicks_Y:
+    ax.set_yticks( yticks )
 
 anim = animation.FuncAnimation( fig, UpdateFrame, \
                                 init_func = InitializeFrame, \
