@@ -308,6 +308,11 @@ def GetData( DataDirectory, PlotFileBaseName, Field, \
         Data = np.copy( CoveringGrid[Field].to_ndarray() )
         DataUnits = 'kb/baryon'
 
+    elif Field == 'AF_E':
+
+        Data = np.copy( CoveringGrid[Field].to_ndarray() )
+        DataUnits = 'erg/g'
+
     elif Field == 'AF_Cs':
 
         Data = np.copy( CoveringGrid[Field].to_ndarray() )
@@ -650,6 +655,7 @@ def GetData( DataDirectory, PlotFileBaseName, Field, \
         print( '  AF_Ye' )
         print( '  AF_T' )
         print( '  AF_S' )
+        print( '  AF_E' )
         print( '  AF_Cs' )
         print( '  GF_Gm_11' )
         print( '  GF_Gm_22' )
