@@ -4,3 +4,4 @@ amrex/*.mp4
 amrex/*.png
 amrex/*.gzip
 amrex/AdiabaticCollapse_XCFC*/
+amrex/*.out
