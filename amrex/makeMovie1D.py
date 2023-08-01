@@ -71,12 +71,20 @@ dataDirectory = '.{:}'.format( ID )
 if not plotfileDirectory[-1] == '/': plotfileDirectory += '/'
 if not dataDirectory    [-1] == '/': dataDirectory     += '/'
 
+fcD = False
+owD = False
+fcF = False
+owF = False
+
 plotfileArray \
   = MakeDataFile( field, plotfileDirectory, dataDirectory, \
                   plotfileBaseName, 'spherical', \
                   SSi = SSi, SSf = SSf, nSS = nSS, \
                   UsePhysicalUnits = True, \
-                  MaxLevel = maxLevel, Verbose = verbose )
+                  MaxLevel = maxLevel, \
+                  forceChoiceD = fcD, owD = owD, \
+                  forceChoiceF = fcF, owF = owF, \
+                  Verbose = verbose )
 plotfileArray = np.copy( plotfileArray[::plotEvery] )
 
 def f(t):
@@ -105,7 +113,7 @@ xH = X1_C0[-1] + 0.5 * dX10[-1]
 if nSS < 0: nSS = plotfileArray.shape[0]
 
 fig, ax = plt.subplots( 1, 1 )
-ax.set_title( r'$\texttt{{{:}}}$'.format( ID ), fontsize = 15 )
+ax.set_title( r'$\mathrm{{{:}}}$'.format( ID ), fontsize = 15 )
 
 if not useCustomLimits:
     ymin = +np.inf
@@ -180,7 +188,7 @@ anim = animation.FuncAnimation( fig, UpdateFrame, \
 
 fps = max( 1, nSS / movRunTime )
 
-movName = 'mov.{:}_{:}.mp4'.format( ID, field )
+movName = HOME + 'mov.{:}_{:}.mp4'.format( ID, field )
 print( '\n  Making movie' )
 print( '  ------------' )
 anim.save( movName, fps = fps, dpi = 300 )
