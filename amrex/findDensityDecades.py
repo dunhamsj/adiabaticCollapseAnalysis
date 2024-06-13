@@ -10,12 +10,15 @@ def findDensityDecades():
 
     useEvery = 1
 
-    ID = 'AdiabaticCollapse_XCFC_old'
-    idSuffix = '_old'
+    ID = 'AdiabaticCollapse_XCFC'
+    idSuffix = ''
 
+    #plotfileDirectory \
+    #  = '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
+    #    + '{:}/{:}/'.format( ID, ID + idSuffix )
     plotfileDirectory \
-      = '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
-        + '{:}/{:}/'.format( ID, ID + idSuffix )
+      = '/home/kkadoogan/' \
+        + '{:}/'.format( ID, ID + idSuffix )
 
     ID += idSuffix
 

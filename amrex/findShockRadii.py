@@ -8,18 +8,21 @@ from MakeDataFile import MakeDataFile
 
 def findShockRadii():
 
-    useEvery = 10
+    useEvery = 1
 
     # These numbers come from running findDensityDecades.py
-    tb        = 2.503e2
-    indBounce = 2503
+    tb        = 2.530e2
+    indBounce = 253
 
-    ID = 'AdiabaticCollapse_XCFC'
-    idSuffix = '_old'
+    ID = 'AdiabaticCollapse_XCFC_newCP'
+    idSuffix = ''
 
+    #plotfileDirectory \
+    #  = '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
+    #    + '{:}/{:}/'.format( ID, ID + idSuffix )
     plotfileDirectory \
-      = '/home/kkadoogan/Work/Codes/thornado/SandBox/AMReX/Applications/' \
-        + '{:}/{:}/'.format( ID, ID + idSuffix )
+      = '/home/kkadoogan/' \
+        + '{:}/'.format( ID, ID + idSuffix )
 
     ID += idSuffix
 
@@ -92,6 +95,12 @@ def findShockRadii():
     ind  = np.zeros( (nRadii), np.int64   )
 
     fig, ax = plt.subplots( 1, 1 )
+
+    ax.set_title( r'$\texttt{{{:}}}$'.format( ID ) )
+
+    plotfileDirectory \
+      = '/home/kkadoogan/' \
+        + '{:}/'.format( ID, ID + idSuffix )
 
     for iSS in range( SS.shape[0] ):
 

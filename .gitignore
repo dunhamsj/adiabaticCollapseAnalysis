@@ -1,7 +1,9 @@
 amrex/.*
-amrex/__pycache__
-amrex/*.mp4
-amrex/*.png
-amrex/*.gzip
 amrex/AdiabaticCollapse_XCFC*/
-amrex/*.out
+*.out
+*dat
+*mp4
+*png
+__pycache__
+*gzip
+*gz
